@@ -25,15 +25,15 @@ import java.util.concurrent.TimeUnit;
 @Listeners({ScreenshotListener.class})
 public class TestBase {
     private static final String PATH_TO_TEST_CAPS_JSON = "src/test/resources/conf/capabilities/test_caps.json";
-    private static final ThreadLocal<AppiumDriver<?>> driver = new ThreadLocal();
+    private AppiumDriver driver;
     private static final String BROWSERSTACK_HUB_URL = "hub-cloud.browserstack.com";
     private static final long TIMESTAMP = (new Date()).getTime();
     private static final String appLocation = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "/src/test/resources/app").toString();
     private Local local;
     public MobileHelper mobileHelper;
 
-    public AppiumDriver<?> getDriver() {
-        return driver.get();
+    public AppiumDriver getDriver() {
+        return driver;
     }
 
     @BeforeMethod
@@ -48,7 +48,7 @@ public class TestBase {
             capabilities.setCapability("platformVersion", testCapsConfig.get("platformVersion").toString());
             capabilities.setCapability("app", appLocation.concat(File.separator).concat(testCapsConfig.get("app.local").toString()));
             capabilities.setCapability("automationName", testCapsConfig.get("automationName").toString());
-            driver.set(new AndroidDriver(new URL("http://localhost:4723/wd/hub"), capabilities));
+            driver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), capabilities);
         } else if (environment.equalsIgnoreCase("remote")) {
             JSONObject profilesJson = (JSONObject)testCapsConfig.get("tests");
             JSONObject envs = (JSONObject)profilesJson.get(testType);
@@ -72,7 +72,7 @@ public class TestBase {
             String accessKey = getAccessKey(testCapsConfig);
 
             createSecureTunnelIfNeeded(caps, testCapsConfig);
-            driver.set(new AppiumDriver(new URL("https://" + username + ":" + accessKey + "@" + BROWSERSTACK_HUB_URL + "/wd/hub"), caps));
+            driver = new AppiumDriver(new URL("https://" + username + ":" + accessKey + "@" + BROWSERSTACK_HUB_URL + "/wd/hub"), caps);
         } else if (environment.equalsIgnoreCase("docker")) {
             System.out.println("TO BE DECIDED");
         }

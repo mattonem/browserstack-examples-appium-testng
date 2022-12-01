@@ -6,10 +6,10 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.support.PageFactory;
 
 public class BasePage {
-    protected AppiumDriver<?> driver;
+    protected AppiumDriver driver;
     protected MobileHelper mobileHelper;
 
-    public BasePage(AppiumDriver<?> driver) {
+    public BasePage(AppiumDriver driver) {
         this.driver = driver;
         this.mobileHelper = new MobileHelper(driver);
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);

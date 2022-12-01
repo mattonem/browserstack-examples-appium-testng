@@ -6,28 +6,32 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class LoginPage extends BasePage {
-    @AndroidFindBy(accessibility = "username-input")
-    @iOSXCUITFindBy(accessibility = "username-input")
+    @AndroidFindBy(accessibility = "UserName")
+    @iOSXCUITFindBy(accessibility = "UserName")
     private MobileElement usernameInput;
 
-    @AndroidFindBy(accessibility = "password-input")
-    @iOSXCUITFindBy(accessibility = "password-input")
+    @AndroidFindBy(accessibility = "Password")
+    @iOSXCUITFindBy(accessibility = "Password")
     private MobileElement passwordInput;
 
-    @AndroidFindBy(accessibility = "login-btn")
-    @iOSXCUITFindBy(accessibility = "login-btn")
+    @AndroidFindBy(accessibility = "LoginButton")
+    @iOSXCUITFindBy(accessibility = "LoginButton")
     private MobileElement logInButton;
 
-    public LoginPage(AppiumDriver<?> driver) {
+    @AndroidFindBy(accessibility = "StatusLabel")
+    @iOSXCUITFindBy(accessibility = "StatusLabel")
+    private MobileElement labelLoginStatus;
+
+    public LoginPage(AppiumDriver driver) {
         super(driver);
     }
 
     public HomePage loginWith(String username, String password) {
         usernameInput.click();
-        mobileHelper.selectFromPickerWheel("//XCUIElementTypePickerWheel[@value='Accepted usernames are']", username);
-
+        usernameInput.setValue(username);
+ 
         passwordInput.click();
-        mobileHelper.selectFromPickerWheel("//XCUIElementTypePickerWheel[@value='Password for all users']", password);
+        passwordInput.setValue(password);
         logInButton.click();
         return new HomePage(driver);
     }

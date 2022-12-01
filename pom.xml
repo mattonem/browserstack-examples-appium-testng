@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.browserstack</groupId>
@@ -14,6 +12,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <aspectj.version>1.9.5</aspectj.version>
+        <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
         <allure-maven.version>2.10.0</allure-maven.version>
         <testng.parallel>classes</testng.parallel>
         <testng.threadCount>5</testng.threadCount>
@@ -42,9 +41,7 @@
                     <systemPropertyVariables>
                         <environment>on-prem</environment>
                     </systemPropertyVariables>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
+                    <argLine>-javaagent:${com.browserstack:browserstack-java-sdk:jar}</argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -54,6 +51,18 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>getClasspathFilenames</id>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
         </plugins>
     </build>
 
@@ -104,6 +113,12 @@
             <artifactId>opencsv</artifactId>
             <version>5.4</version>
         </dependency>
+        <dependency>
+      <groupId>com.browserstack</groupId>
+      <artifactId>browserstack-java-sdk</artifactId>
+      <version>LATEST</version>
+      <scope>compile</scope>
+    </dependency>
     </dependencies>
     <profiles>
         <profile>
@@ -115,9 +130,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <includes>
-                                <include>
-                                    com.browserstack.test.suites.e2e.OrderTest
-                                </include>
+                                <include>com.browserstack.test.suites.e2e.OrderTest</include>
                             </includes>
                         </configuration>
                     </plugin>
@@ -169,9 +182,7 @@
                                 </property>
                             </properties>
                             <includes>
-                                <include>
-                                    com.browserstack.test.suites.e2e.OrderTest
-                                </include>
+                                <include>com.browserstack.test.suites.e2e.OrderTest</include>
                             </includes>
                         </configuration>
                     </plugin>
@@ -197,9 +208,7 @@
                                 </property>
                             </properties>
                             <includes>
-                                <include>
-                                    com.browserstack.test.suites.local.LocalTest
-                                </include>
+                                <include>com.browserstack.test.suites.local.LocalTest</include>
                             </includes>
                         </configuration>
                     </plugin>
@@ -227,8 +236,7 @@
                             <parallel>${testng.parallel}</parallel>
                             <threadCount>${testng.threadCount}</threadCount>
                             <suiteXmlFiles>
-                                <suiteXmlFile>src/test/resources/conf/runners/testng-browserstack-local-parallel.xml
-                                </suiteXmlFile>
+                                <suiteXmlFile>src/test/resources/conf/runners/testng-browserstack-local-parallel.xml</suiteXmlFile>
                             </suiteXmlFiles>
                         </configuration>
                     </plugin>
@@ -281,8 +289,7 @@
                             <parallel>${testng.parallel}</parallel>
                             <threadCount>${testng.threadCount}</threadCount>
                             <suiteXmlFiles>
-                                <suiteXmlFile>src/test/resources/conf/runners/testng-browserstack-parallel.xml
-                                </suiteXmlFile>
+                                <suiteXmlFile>src/test/resources/conf/runners/testng-browserstack-parallel.xml</suiteXmlFile>
                             </suiteXmlFiles>
                         </configuration>
                     </plugin>
